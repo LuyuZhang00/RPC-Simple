@@ -9,33 +9,25 @@
         <version>1.0-SNAPSHOT</version>
     </parent>
 
-    <artifactId>rpc-client</artifactId>
+    <artifactId>rpc-example</artifactId>
 
     <dependencies>
         <dependency>
             <groupId>com.barry</groupId>
-            <artifactId>rpc-proto</artifactId>
+            <artifactId>rpc-server</artifactId>
             <version>${project.version}</version>
         </dependency>
+
         <dependency>
             <groupId>com.barry</groupId>
-            <artifactId>rpc-codec</artifactId>
-            <version>${project.version}</version>
-        </dependency>
-        <dependency>
-            <groupId>com.barry</groupId>
-            <artifactId>rpc-common</artifactId>
-            <version>${project.version}</version>
-        </dependency>
-        <dependency>
-            <groupId>com.barry</groupId>
-            <artifactId>rpc-transport</artifactId>
+            <artifactId>rpc-client</artifactId>
             <version>${project.version}</version>
         </dependency>
     </dependencies>
+
     <properties>
-        <maven.compiler.source>8</maven.compiler.source>
-        <maven.compiler.target>8</maven.compiler.target>
+        <maven.compiler.source>17</maven.compiler.source>
+        <maven.compiler.target>17</maven.compiler.target>
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
     </properties>
 
