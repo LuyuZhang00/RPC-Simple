@@ -1,6 +1,7 @@
 package com.barry.rpc.example;
 
 import com.barry.rpc.server.RpcServer;
+import com.barry.rpc.server.RpcServerConfig;
 
 /**
  * @Author : Luyu Zhang
@@ -9,7 +10,7 @@ import com.barry.rpc.server.RpcServer;
 public class Server {
 
     public static void main(String[] args) {
-        RpcServer server = new RpcServer();
+        RpcServer server = new RpcServer(new RpcServerConfig());
         server.register(CalcService.class, new CalcServiceImpl());
         server.start();
     }

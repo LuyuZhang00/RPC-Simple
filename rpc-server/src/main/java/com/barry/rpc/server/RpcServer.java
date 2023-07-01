@@ -29,6 +29,23 @@ public class RpcServer {
     private ServiceManager serviceManager;
     private ServiceInvoker serviceInvoker;
 
+    public RpcServer() {
+
+    }
+    public RpcServer(RpcServerConfig config) {
+
+        this.config = config;
+
+        this.net= ReflectionUtils.newInstance(config.getTransportClass());
+        this.net.init(config.getPort(),this.handler);
+
+        this.encoder = ReflectionUtils.newInstance(config.getEncoderClass());
+        this.decoder = ReflectionUtils.newInstance(config.getDecoderClass());
+
+        this.serviceManager = new ServiceManager();
+        this.serviceInvoker = new ServiceInvoker();
+    }
+
     public <T> void register(Class<T> interfaceClass, T bean){
         serviceManager.register(interfaceClass,bean);
     }
@@ -36,6 +53,7 @@ public class RpcServer {
     public void start(){
         this.net.start();
     }
+
     private RequestHandler handler = new RequestHandler() {
         @Override
         public void onRequest(InputStream recive, OutputStream toResp) {
@@ -48,10 +66,13 @@ public class RpcServer {
                 ServiceInstance sis = serviceManager.lookup(request);
                 Object ret = serviceInvoker.invoke(sis,request);
                 resp.setData(ret);
+
             }catch (Exception e){
                 log.warn(e.getMessage(),e);
                 resp.setCode(1);
-                resp.setMessage("RpcServer got error: "+e.getClass().getName()+" : "+e.getMessage());
+                resp.setMessage("RpcServer got error: "
+                        +e.getClass().getName()
+                        +" : "+e.getMessage());
             }finally {
                 try{
                     byte[] outBytes = encoder.encode(resp);
@@ -63,20 +84,4 @@ public class RpcServer {
             }
         }
     };
-
-    public RpcServer() {
-        this.config = config;
-
-        if (config != null) {
-            this.net= ReflectionUtils.newInstance(config.getTransportClass());
-        }
-        this.net.init(config.getPort(),this.handler);
-        this.encoder = ReflectionUtils.newInstance(config.getEncoderClass());
-        this.decoder = ReflectionUtils.newInstance(config.getDecoderClass());
-
-        this.serviceManager = new ServiceManager();
-        this.serviceInvoker = new ServiceInvoker();
-    }
-
-
 }

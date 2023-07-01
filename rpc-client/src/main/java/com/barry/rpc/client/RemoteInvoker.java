@@ -29,6 +29,7 @@ public class RemoteInvoker implements InvocationHandler {
     private Class clazz;
 
     RemoteInvoker(Class clazz, Encoder encoder, Decoder decoder, TransportSelector selector) {
+        this.clazz = clazz;
         this.encoder = encoder;
         this.decoder = decoder;
         this.selector = selector;
